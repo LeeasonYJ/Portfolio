@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DuckDuckRich Hidden Insurance Screen</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <style>
+        *{box-sizing: border-box; text-decoration: none; color: #333; list-style: none; margin: 0; padding: 0;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #fff; font-family: 'Paperlogy', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: auto;
+overflow-x: hidden; scrollbar-width: none; }
+html{scrollbar-width: none;}
+html::-webkit-scrollbar, ::-webkit-scrollbar {display: none;}
+.wrap{width: 402px; height: 874px;}
+
+/* fixed main btn commom css ----- */
+.main-btn-div{
+    width: 402px; height: 105px; position: fixed; bottom: 0; left: 0; overflow: hidden;
+    display: flex !important; flex-direction: row !important; justify-content: space-around; align-items: center;
+    background: rgba(255, 255, 255, .15); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, .3); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, .15);
+    }
+.main-btn{width: 70px; height: 60px; padding: 10px 5px;}
+.main-btn:nth-child(2){width: 95px; height: 60px;}
+.main-btn > a{display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 10px;}
+.main-btn > a > span{display: block; font-size: .8rem; color: #005D39;}
+.icon-div{display: flex; align-items: center; justify-content: center; height: 24px;}
+.icon-div span{color: #005D39;}
+
+/* fixed main btn custom css */
+.main-btn:first-child > a > span{font-weight: 600;}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+.hidden {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+
+.hiddeninsur{width: 402px; height: 874px; position: relative; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;}
+
+.hiddeninsur-img{position: absolute; left: 0; top: 0; z-index: -1;}
+
+.hiddeninsur-btn{position: absolute; left: 100px; bottom: 153px;}
+.hiddeninsur-btn a{display: block; width: 216px; height: 60px; background: #00995e; border-radius: 100px; text-align: center; line-height: 60px; font-size: 1.2rem; color: #F9F5E0;
+transition: scale .15s;}
+
+.hiddeninsur-btn a:hover{scale: 1.05;}
+
+    </style>
+</head>
+<body>
+    <div class="wrap">
+
+        <div class="hiddeninsur">
+            <div class="hiddeninsur-img">
+        <img src="images/duckduckrich_temp/hidden.png" alt="hiddeninsur-page">
+            </div>
+        <div class="hiddeninsur-btn">
+            <a href="index-9.html">숨은 보험금 조회하기</a>
+        </div>
+        </div>
+
+        <div class="main-btn-div">
+
+            <div class="main-btn">
+                <a href="index-7.html">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined home">
+                    home
+                    </span>
+                </div>
+                <span>홈</span>
+                </a>
+            </div>
+
+            <div class="main-btn">
+                <a href="index-8.html">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined hidden">
+                    insert_chart
+                    </span>
+                </div>
+                <span>숨은 보험금 조회</span>
+                </a>
+            </div>
+
+            <div class="main-btn">
+                <a href="index-12.html">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined getinsur">
+                    receipt_long
+                    </span>
+                </div>
+                <span>보험금 청구</span>
+                </a>
+            </div>
+
+            <div class="main-btn">
+                <a href="#">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined search">
+                    search
+                    </span>
+                </div>
+                <span>검색</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="js/jquery-4.0.0.min.js"></script>
+</body>
+</html>

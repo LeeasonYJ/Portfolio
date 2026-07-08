@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckDuckRich</title>
+    <link rel="stylesheet" href="css/i-frame_css.css"></link>
+</head>
+<body>
+    <div class="mockup">
+        <div class="m-mockup">
+            <div class="iframe-url">
+                <iframe src="index/index-1.html" frameborder="0"></iframe>
+            </div>
+            <div class="home-btn">
+            </div>
+            <div class="camera">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="volume">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="power">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.home-btn').addEventListener('click', function () {
+    location.replace('i-frame.html');   /* 다시 로드 */
+});
+    </script>
+</body>
+</html>

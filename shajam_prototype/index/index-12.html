@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Shazam Library Date Page</title>
+
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <style>
+        /* @charset "UTF-8"; */
+*{box-sizing: border-box; text-decoration: none; color: #333; list-style: none; margin: 0; padding: 0;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #fff; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; overflow: auto;
+overflow-x: hidden; scrollbar-width: none; }
+html{scrollbar-width: none;}
+html::-webkit-scrollbar, ::-webkit-scrollbar {display: none;}
+.wrap{width: 402px; height: 874px; background: #fff;}
+
+.library{width: 100%; height: 100%; position: relative;}
+.home-btn a{position: absolute; top: 55px; right: 20px; z-index: 1;}
+.home-btn a img{width: auto; height: 30px;}
+.date-btn a{position: absolute; top: 223px; left: 24px;}
+.genre-btn a{position: absolute; top: 223px; left: 193px;}
+
+
+/* fixed screen overlay */
+.full-overlay{width: 402px; height: 100px; position: fixed; bottom: 0; left: 0; z-index: 99999; background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 45%,
+    rgba(255, 255, 255, 0) 100% );
+  pointer-events: none;}
+
+/* fixed main btn common css */
+.main-btn-div{width: 372px; height: 68px; position: fixed; bottom: 20px; left: 15px; overflow: hidden;
+display: flex !important; flex-direction: row !important; justify-content: space-around; align-items: center;
+z-index: 999999;}
+.main-btn a{width: calc(372px / 4); height: 70px; padding: 10px 4px; background: rgba(242, 242, 242, .5); display: block; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 3px;
+-webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);}
+.main-btn a .icon-div{width: 45px; height: 45px; display: flex; justify-content: center; align-items: center;}
+.main-btn a .icon-div img{width: auto; height: 35px;}
+.main-btn a span{font-size: .8rem; color: #BAC7DA;}
+
+/* fixed main btn custom css */
+.main-btn:nth-child(2) a{border-radius: 20px;}
+.main-btn:nth-child(1) a{border-radius: 20px;}
+.main-btn:nth-child(3) a{border-radius: 20px 0 0 20px;}
+.main-btn:nth-child(2) a span{font-weight: 600; color: #4158A7;}
+
+    </style>
+</head>
+<body>
+    <div class="wrap">
+    <div class="library">
+        <div class="library-bg">
+            <img src="images/bg/library-date-bg.png" alt="library date screen bg">
+        </div>
+        <div class="date-btn">
+            <a href="index-12.html">
+                <img src="images/btn/tagdate-selected-btn.png" alt="date-selected-btn">
+            </a>
+        </div>
+        <div class="genre-btn">
+            <a href="index-13.html">
+                <img src="images/btn/taggenre-btn.png" alt="genre-btn">
+            </a>
+        </div>
+    </div>
+
+    <div class="full-overlay"></div>
+    <div class="main-btn-div">
+        <div class="main-btn">
+        <a href="index-2.html">
+            <div class="icon-div">
+                <img src="images/icons/home-icon.png" alt="home">
+            </div>
+            <span>홈</span>
+        </a>
+        </div>
+
+        <div class="main-btn">
+        <a href="index-12.html">
+            <div class="icon-div">
+                <img src="images/icons/blue-library-icon.png" alt="library">
+            </div>
+            <span>라이브러리</span>
+        </a>
+        </div>
+
+        <div class="main-btn">
+        <a href="index-7.html">
+            <div class="icon-div">
+                <img src="images/icons/commu-icon.png" alt="community">
+            </div>
+            <span>커뮤니티</span>
+        </a>
+        </div>
+
+        <div class="main-btn">
+        <a href="#">
+            <div class="icon-div">
+                <img src="images/icons/search-icon.png">
+            </div>
+            <span>검색</span>
+        </a>
+        </div>
+    </div>
+
+    </div><!-- wrap end -->
+</body>
+</html>

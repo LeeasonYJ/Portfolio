@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Shazam Redesign Main Page</title>
+
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+
+    <style>
+    /* @charset "UTF-8"; */
+*{box-sizing: border-box; text-decoration: none; color: #333; list-style: none; margin: 0; padding: 0;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #fff; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; overflow: auto;
+overflow-x: hidden; scrollbar-width: none; }
+html{scrollbar-width: none;}
+html::-webkit-scrollbar, ::-webkit-scrollbar {display: none;}
+.wrap{width: 402px; height: 874px; background: #fff;}
+
+.first{width: 100%; height: 100%; position: relative;}
+.tap-btn a{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%);}
+
+.tap-btn a:hover .shazam-img{transform: scale(101%) translateY(-5px); filter: drop-shadow(0 8px 10px rgba(0,0,0,.15));}
+
+
+/* popup */
+.popup{width: 402px; height: 874px; position: fixed; top: 0; left: 0; z-index: 1000000; overflow: hidden; transform: translateY(100%); visibility: hidden;
+transition: transform .38s cubic-bezier(.32, .72, .33, 1), visibility 0s linear .38s;}
+.popup.open{transform: translateY(0); visibility: visible;
+transition: transform .38s cubic-bezier(.32, .72, .33, 1), visibility 0s;}
+
+.popup-bg{position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
+.popup-bg img{width: 100%; height: 100%; object-fit: cover; display: block;}
+
+.close-btn{position: absolute; top: 45px; left: 50%; transform: translateX(-50%); z-index: 1;}
+.close-btn img{width: auto; height: 30px; display: block;}
+
+.loading-circle{position: absolute; left: 0; bottom: 200px; width: 100%; text-align: center; z-index: 1;}
+.loading-dots{display: flex; justify-content: center;align-items: center; gap: 14px; margin-bottom: 22px;}
+.loading-dots .dot{
+  width: 10px; height: 10px; border-radius: 50%; background: #fff; display: block;
+  animation: dot-pulse 3s ease-in-out infinite;
+}
+.loading-dots .dot:nth-child(2){animation-delay: 0s;}
+.loading-dots .dot:nth-child(3){animation-delay: -2s;}
+.loading-dots .dot:nth-child(1){animation-delay: -1s;}
+
+@keyframes dot-pulse{
+  0%       {transform: scale(1.4);}
+  30%    {transform: scale(1);}    /* 복구*/
+  90%    {transform: scale(1);}    /* 나머지 대기 */
+  100%     {transform: scale(1.4);}  /* 다음 차례 직전 다시 커짐 */
+}
+
+.demo{position: absolute; left: 0; bottom: 30px; width: 100%; text-align: center; z-index: 1;}
+.demo small{display: block; font-size: .75rem; font-weight: 600; color: #5F6F96; margin-bottom: 12px;}
+.demo a{display: inline-flex; justify-content: center; align-items: center;
+width: 150px; height: 48px; border-radius: 14px; font-size: .95rem; font-weight: 800; margin: 0 5px;}
+.demo a.demo-success{background: #4158A7; color: #fff;}
+.demo a.demo-fail{background: #fff; color: #4158A7;}
+
+
+/* fixed screen overlay */
+.full-overlay{width: 402px; height: 100px; position: fixed; bottom: 0; left: 0; z-index: 99999; background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 45%,
+    rgba(255, 255, 255, 0) 100% );
+  pointer-events: none;}
+/* fixed main btn common css */
+.main-btn-div{width: 372px; height: 68px; position: fixed; bottom: 20px; left: 15px; overflow: hidden;
+display: flex !important; flex-direction: row !important; justify-content: space-around; align-items: center;
+z-index: 999999;}
+.main-btn a{width: calc(372px / 4); height: 70px; padding: 10px 4px; background: rgba(242, 242, 242, .5); display: block; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 3px;
+-webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);}
+.main-btn a .icon-div{width: 45px; height: 45px; display: flex; justify-content: center; align-items: center;}
+.main-btn a .icon-div img{width: auto; height: 35px;}
+.main-btn a span{font-size: .8rem; color: #BAC7DA;}
+.main-btn:nth-child(4) a{border-radius: 0 20px 20px 0;}
+/* fixed main btn custom css */
+.main-btn:nth-child(1) a{border-radius: 20px;}
+.main-btn:nth-child(2) a{border-radius: 20px 0 0 20px;}
+.main-btn:nth-child(1) a span{font-weight: 600; color: #4158A7;}
+
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="first">
+        <div class="first-img">
+            <img src="images/bg/main-bg.png" alt="first screen bg">
+        </div>
+        <div class="tap-btn">
+            <a href="#" id="open-loading">
+                <img src="images/btn/main-btn.png" alt="shazam btn" class="shazam-img">
+            </a>
+        </div>
+    </div>
+
+    <div class="full-overlay"></div>
+    <div class="main-btn-div">
+        <div class="main-btn">
+        <a href="index-2.html">
+            <div class="icon-div">
+                <img src="images/icons/blue-home-icon.png" alt="home">
+            </div>
+            <span>홈</span>
+        </a>
+        </div>
+
+        <div class="main-btn">
+        <a href="index-12.html">
+            <div class="icon-div">
+                <img src="images/icons/library-icon.png" alt="library">
+            </div>
+            <span>라이브러리</span>
+        </a>
+        </div>
+
+        <div class="main-btn">
+        <a href="index-7.html">
+            <div class="icon-div">
+                <img src="images/icons/commu-icon.png" alt="community">
+            </div>
+            <span>커뮤니티</span>
+        </a>
+        </div>
+
+        <div class="main-btn">
+        <a href="#">
+            <div class="icon-div">
+                <img src="images/icons/search-icon.png">
+            </div>
+            <span>검색</span>
+        </a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup" aria-hidden="true">
+        <div class="popup-bg">
+            <img src="images/bg/loading-bg.png" alt="loading screen">
+        </div>
+        <a href="#" class="close-btn" id="close-btn">
+            <img src="images/icons/white-down-icon.png" alt="down-btn">
+        </a>
+        <div class="loading-circle">
+            <div class="loading-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+        <div class="demo">
+            <small> 시연용 결과 분기 </small>
+            <a href="index-3.html" class="demo-success"> 인식 성공 시 </a>
+            <a href="index-4.html" class="demo-fail"> 인식 실패 시 </a>
+        </div>
+    </div>
+
+</div><!-- wrap end -->
+
+<script>
+    (function(){
+        var popup = document.getElementById('popup');
+        var openBtn = document.getElementById('open-loading');
+        var closeBtn = document.getElementById('close-btn');
+
+        openBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        popup.classList.add('open');
+        popup.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; /* 팝업 뒤 화면 스크롤 잠금 */
+    });
+
+    closeBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        popup.classList.remove('open');
+        popup.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    });
+})();
+</script>
+</body>
+</html>

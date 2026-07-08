@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DuckDuckRich Signup Screen</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <style>
+        /* @charset "UTF-8"; */
+*{box-sizing: border-box; text-decoration: none; color: #333;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #fff; font-family: 'Paperlogy', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden;}
+.wrap{width: 402px; height: 874px;}
+.wrap > div{display: flex; flex-direction: column; text-align: center;}
+.up{display: flex; width: 100%; position: relative; margin: 20px auto;}
+.back-btn{position: absolute; left: 30px; top: 35px;}
+.logo{width: 100%; height: 80px;}
+.logo img{width: 200px;}
+
+.input{display: flex; gap: 30px; width: 282px; margin: 90px 50px; overflow: hidden;}
+.input > div{width: 272px; text-align: left;}
+.input > div span{font-weight: 500; font-size: 16px;}
+input{width: 272px; height: 40px; border: 2px solid #B39A00; border-radius: 100px; margin-top: 10px; background: #fff;}
+
+.btn{width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;}
+.signup a{display: block; width: 155px; height: 45px; border-radius: 50px; border: 2px solid #00995E; line-height: 45px;}
+.signup a span{color: #00995E;}
+.icons{display: flex; gap: 30px;}
+.icons > div{width: 40px; height: 40px; border-radius: 50%;}
+.icons > div > a{width: 40px; height: 40px; line-height: 40px;}
+
+.kakao{background: #B39A00;}
+.kakao a{line-height: 30px;}
+.kakao i{font-size: 1.2rem;}
+.apple{background: #6BC4A2;}
+.apple i{font-size: 1.4rem;}
+
+    </style>
+</head>
+<body>
+
+    <div class="wrap">
+
+        <div class="up">
+        <div class="back-btn">
+            <a href="javascript:history.back();"><i class="fa-solid fa-chevron-left" style="color: #B39A00;"></i></a>
+        </div>
+    <div class="logo">
+        <img src="images/duckduckrich_logo/DuckDuckRich_letterlogo2(transparent).png" alt="상단로고">
+    </div>
+    </div> <!-- 상단로고 및 뒤로가기 버튼 끝 -->
+
+    <div class="input">
+        <div class="name">
+            <div class="name-title"><span>이름 입력</span></div>
+            <input type="text" class="name">
+        </div>
+        <div class="email">
+            <div class="email-title"><span>이메일 입력</span></div>
+            <input type="email" class="email">
+        </div>
+        <div class="pw">
+            <div class="pw-title"><span>비밀번호 입력</span></div>
+            <input type="password" class="pw">
+        </div>
+        <div class="repw">
+            <div class="repw-title"><span>비밀번호 확인</span></div>
+            <input type="password" class="repw">
+        </div>
+    </div> <!-- 인풋 항목 끝 -->
+
+    <div class="btn">
+        <div class="signup">
+            <a href="index-7.html"><span>회원가입하기</span></a>
+        </div>
+        <div class="icons">
+    <div class="kakao">
+        <a href="index-3.html"><i class="fa-brands fa-kakao-talk" style="color: #F8F5E0;"></i></a>
+    </div>
+    <div class="apple">
+        <a href="index-6.html"><i class="fa-brands fa-apple" style="color: #F8F5E0;"></i></a>
+    </div>
+        </div>
+    </div> <!-- 회원가입하기 버튼 끝 -->
+
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DuckDuckRich Login Screen</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <style>
+        /* @charset "UTF-8"; */
+*{box-sizing: border-box; text-decoration: none; color: #333;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #fff; font-family: 'Paperlogy', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden;}
+.wrap{width: 402px; height: 874px;}
+.wrap > div{display: flex; flex-direction: column; text-align: center;}
+.up{display: flex; width: 100%; position: relative; margin: 20px auto;}
+.back-btn{position: absolute; left: 30px; top: 35px;}
+.logo{width: 100%; height: 80px;}
+.logo img{width: 200px;}
+
+.input{display: flex; gap: 30px; width: 282px; margin: 90px 50px; overflow: hidden;}
+.id, .pw{width: 272px; text-align: left;}
+.id-title span, .pw-title span{font-weight: 500; font-size: 16px;}
+input{width: 272px; height: 50px; border: 2px solid #B39A00; border-radius: 100px; margin-top: 10px; background: #fff;}
+.input-add{display: flex; justify-content: space-between;}
+.input-add a{font-size: 12px;}
+.input-add a span{color: #B39A00; text-decoration: underline;}
+
+.btn{width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px;}
+.login a{display: block; width: 155px; height: 45px; border-radius: 50px; border: 2px solid #00995E; line-height: 45px;}
+.login a span{color: #00995E;}
+.icons{display: flex; gap: 30px;}
+.icons > div{width: 40px; height: 40px; background: #6BC4A2; border-radius: 50%;}
+.icons > div > a{width: 40px; height: 40px; line-height: 40px;}
+.apple i{font-size: 1.4rem;}
+.email i{font-size: 1.2rem;}
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+    <div class="up">
+        <div class="back-btn">
+            <a href="javascript:history.back();"><i class="fa-solid fa-chevron-left" style="color: #B39A00;"></i></a>
+        </div>
+    <div class="logo">
+        <img src="images/duckduckrich_logo/DuckDuckRich_letterlogo2(transparent).png" alt="상단로고">
+    </div>
+    </div>
+    <div class="input">
+        <div class="id">
+            <div class="id-title"><span>카카오톡 아이디 입력</span></div>
+            <input type="text" class="id">
+        </div>
+        <div class="pw">
+            <div class="pw-title"><span>카카오톡 비밀번호 입력</span></div>
+            <input type="password" class="pw">
+        </div>
+        <div class="input-add">
+            <a href="index-4.html"><span>가입된 계정이 없으신가요?</span></a>
+            <a href="#"><span>비밀번호를 잊으셨나요?</span></a>
+        </div>
+    </div>
+    <div class="btn">
+        <div class="login">
+            <a href="index-7.html"><span> 로그인</span></a>
+        </div>
+        <div class="icons">
+    <div class="apple">
+        <a href="#"><i class="fa-brands fa-apple" style="color: #F8F5E0;"></i></a>
+    </div>
+    <div class="email">
+        <a href="#"><i class="fa-solid fa-envelope" style="color: #F8F5E0;"></i></a>
+    </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="js/jquery-4.0.0.min.js"></script>
+
+</body>
+</html>

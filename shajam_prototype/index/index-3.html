@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Shazam Redesign Success Page</title>
+
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+
+    <style>
+    /* @charset "UTF-8"; */
+*{box-sizing: border-box; text-decoration: none; color: #333; list-style: none; margin: 0; padding: 0;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #fff; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; overflow: auto;
+overflow-x: hidden; scrollbar-width: none; }
+html{scrollbar-width: none;}
+html::-webkit-scrollbar, ::-webkit-scrollbar {display: none;}
+.wrap{width: 402px; height: 874px; background: #fff;}
+
+.success{position: relative;}
+.back-btn a{position: absolute; top: 55px; left: 20px;}
+.back-btn a img{width: auto; height: 25px;}
+
+
+/* fixed screen overlay */
+.full-overlay{width: 402px; height: 100px; position: fixed; bottom: 0; left: 0; z-index: 99999; background: linear-gradient(
+    to top,
+    rgb(0, 0, 0, .8) 0%,
+    rgb(0, 0, 0, .6) 45%,
+    rgba(0, 0, 0, 0) 100% );
+  pointer-events: none;}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="success">
+            <div class="back-btn">
+                <a href="javascript:history.back();">
+                <img src="images/icons/white-down-icon.png" style="rotate: 90deg;" alt="back">
+                </a>
+            </div>
+            <div class="success-screen">
+            <img src="images/bg/success-bg.png" alt="success screen">
+            </div>
+        </div>
+
+    <div class="full-overlay"></div>
+    </div>
+</body>
+</html>

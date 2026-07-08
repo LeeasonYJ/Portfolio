@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>온답 ONDAP — 당신의 답이 누군가의 온기가 됩니다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#D9702C;
+    --orange-deep:#B4551B;
+    --orange-soft:#F5D9C3;
+    --brown:#6B4226;
+    --brown-deep:#452A17;
+    --ink:#2A211A;
+    --cream:#FBF6F0;
+    --cream-dim:#F3E7DA;
+    --gray:#8A7E73;
+    --line:rgba(42,33,26,0.12);
+    --good:#3E7A4E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',-apple-system,sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    font-size:15.5px;
+    line-height:1.65;
+  }
+  a{ color:inherit; text-decoration:none; cursor:pointer; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; font-size:inherit; }
+  .serif{ font-family:'Noto Serif KR','Nanum Myeongjo',serif; }
+
+  .app{ max-width:1180px; margin:0 auto; min-height:100vh; background:#fff; box-shadow:0 0 60px rgba(69,42,23,0.07); }
+
+  /* ===== WHO식 상단 유틸리티 바 ===== */
+  .utilbar{
+    background:var(--brown-deep); color:rgba(255,255,255,0.82);
+    display:flex; justify-content:space-between; align-items:center;
+    padding:7px 36px; font-size:12px; font-weight:600; letter-spacing:0.02em;
+  }
+  .utilbar .l{ display:flex; gap:18px; }
+  .utilbar button:hover{ color:#fff; }
+
+  /* ===== 메인 내비게이션 ===== */
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 36px; border-bottom:2.5px solid var(--orange); background:#fff;
+    position:sticky; top:0; z-index:50;
+  }
+  .nav .logo{ display:flex; align-items:baseline; gap:8px; cursor:pointer; }
+  .nav .logo .ko{ font-size:23px; font-weight:900; color:var(--brown-deep); letter-spacing:-0.02em; }
+  .nav .logo .ko em{ font-style:normal; color:var(--orange); }
+  .nav .logo .en{ font-size:10.5px; font-weight:800; letter-spacing:0.22em; color:var(--gray); }
+  .nav .menu{ display:flex; gap:28px; font-size:14px; font-weight:700; color:var(--ink); }
+  .nav .menu button{ opacity:0.62; padding:4px 0; border-bottom:2.5px solid transparent; transition:all .15s; }
+  .nav .menu button:hover{ opacity:1; }
+  .nav .menu .on{ opacity:1; color:var(--orange-deep); border-bottom-color:var(--orange); }
+  .nav .actions{ display:flex; gap:12px; align-items:center; }
+  .nav .point-chip{
+    display:flex; align-items:center; gap:6px; background:var(--cream-dim); border-radius:20px;
+    padding:7px 14px; font-size:12.5px; font-weight:800; color:var(--brown); cursor:pointer;
+  }
+  .nav .point-chip b{ color:var(--orange-deep); }
+
+  .btn{
+    font-size:13.5px; font-weight:800; padding:11px 22px; border-radius:26px;
+    background:var(--orange); color:#fff; white-space:nowrap; display:inline-block; transition:all .15s;
+    text-align:center;
+  }
+  .btn:hover{ background:var(--orange-deep); }
+  .btn.ghost{ background:transparent; color:var(--brown); border:1.5px solid var(--brown); }
+  .btn.ghost:hover{ background:var(--cream-dim); }
+  .btn.brown{ background:var(--brown); }
+  .btn.brown:hover{ background:var(--brown-deep); }
+  .btn.lg{ font-size:15px; padding:14px 32px; }
+  .btn.disabled{ background:var(--cream-dim); color:var(--gray); cursor:default; }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; animation:fadeIn .25s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .photo{ position:relative; overflow:hidden; background:#d9c9b8; }
+  .photo img.real{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
+
+  .body-pad{ padding:40px 36px 64px; }
+
+  /* ===== 섹션 헤더 (WHO식 좌측 액센트 바) ===== */
+  .sec-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .sec-head::before{ content:''; width:5px; height:24px; background:var(--orange); border-radius:2px; flex-shrink:0; }
+  .sec-head h2{ font-size:22px; font-weight:800; margin:0; letter-spacing:-0.01em; }
+  .sec-sub{ font-size:14px; color:var(--gray); margin:0 0 24px 17px; }
+
+  /* ===== 홈: 히어로 ===== */
+  .hero{ height:430px; position:relative; }
+  .hero::after{
+    content:''; position:absolute; inset:0; z-index:2;
+    background:linear-gradient(100deg, rgba(50,28,12,0.82) 0%, rgba(69,42,23,0.55) 48%, rgba(69,42,23,0.12) 100%);
+  }
+  .hero-inner{ position:relative; z-index:4; height:100%; display:flex; flex-direction:column; justify-content:center; padding:0 56px; max-width:720px; }
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.14); color:#FBD9BC;
+    font-size:12px; font-weight:800; letter-spacing:0.06em; padding:7px 14px; border-radius:20px;
+    width:fit-content; margin-bottom:18px; backdrop-filter:blur(3px);
+  }
+  .hero h1{ color:#fff; font-size:37px; font-weight:900; margin:0 0 14px; line-height:1.42; letter-spacing:-0.01em; }
+  .hero h1 em{ font-style:normal; color:#F7B97E; }
+  .hero .sub{ color:rgba(255,255,255,0.88); font-size:15.5px; line-height:1.7; margin-bottom:26px; max-width:480px; }
+  .hero .cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .hero .btn.ghost:hover{ background:rgba(255,255,255,0.18); }
+
+  /* ===== 홈: 통계 스트립 ===== */
+  .stat-strip{
+    background:var(--brown-deep); color:#fff; display:grid; grid-template-columns:repeat(3,1fr);
+    padding:26px 36px; gap:24px;
+  }
+  .stat-strip .item{ text-align:center; border-left:1px solid rgba(255,255,255,0.16); }
+  .stat-strip .item:first-child{ border-left:none; }
+  .stat-strip .v{ font-size:26px; font-weight:900; color:#F7B97E; letter-spacing:-0.01em; }
+  .stat-strip .l{ font-size:12.5px; opacity:0.75; margin-top:4px; font-weight:600; }
+
+  /* ===== 홈: 설문 카드 ===== */
+  .chip-row{ display:flex; gap:9px; margin:0 0 26px 17px; flex-wrap:wrap; }
+  .chip{
+    display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700;
+    border:1.3px solid var(--line); border-radius:20px; padding:8px 16px; background:#fff; color:var(--ink);
+    transition:all .15s;
+  }
+  .chip.on{ background:var(--brown); color:#fff; border-color:var(--brown); }
+  .chip:hover{ border-color:var(--orange); }
+
+  .survey-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+  .survey-card{
+    background:#fff; border:1.5px solid var(--line); border-radius:16px; overflow:hidden;
+    transition:transform .15s, box-shadow .15s, border-color .15s; display:flex; flex-direction:column;
+  }
+  .survey-card:hover{ transform:translateY(-3px); box-shadow:0 14px 30px rgba(69,42,23,0.12); border-color:var(--orange-soft); }
+  .survey-card .top{ display:flex; }
+  .survey-card .photo{ width:150px; flex-shrink:0; }
+  .survey-card .head{ padding:18px 20px 14px; flex:1; }
+  .survey-card .cat{ font-size:11px; font-weight:800; color:var(--orange-deep); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+  .survey-card .cat .verified{ background:#EEF5EF; color:var(--good); padding:2px 8px; border-radius:6px; font-size:10px; }
+  .survey-card h3{ font-size:16.5px; font-weight:800; margin:0 0 8px; line-height:1.42; }
+  .survey-card .meta{ font-size:12px; color:var(--gray); font-weight:600; }
+  .survey-card .meta b{ color:var(--ink); }
+  .survey-card .bottom{
+    border-top:1px dashed var(--line); padding:13px 20px; display:flex; align-items:center; justify-content:space-between;
+    background:var(--cream); gap:10px; margin-top:auto;
+  }
+  .survey-card .partner{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--gray); font-weight:600; min-width:0; }
+  .survey-card .partner .dot{ width:24px; height:24px; border-radius:50%; background:var(--orange-soft); color:var(--brown); font-size:10.5px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .survey-card .partner span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .reward-badge{
+    background:var(--orange); color:#fff; font-size:14px; font-weight:900; padding:6px 14px; border-radius:10px;
+    letter-spacing:0.01em; flex-shrink:0;
+  }
+  .survey-card .done-badge{ background:var(--cream-dim); color:var(--gray); font-size:12px; font-weight:800; padding:6px 14px; border-radius:10px; flex-shrink:0; }
+
+  /* ===== 홈: 운영 구조 3단계 ===== */
+  .how-wrap{ background:var(--cream); border-radius:20px; padding:36px; margin-top:56px; }
+  .how-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:24px; }
+  .how-card{ background:#fff; border-radius:14px; padding:24px; border:1.5px solid var(--line); position:relative; }
+  .how-card .step{
+    position:absolute; top:-13px; left:20px; background:var(--brown); color:#fff;
+    font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:14px; letter-spacing:0.04em;
+  }
+  .how-card .icon{ font-size:26px; margin-bottom:10px; }
+  .how-card h3{ font-size:15.5px; font-weight:800; margin:0 0 8px; }
+  .how-card p{ font-size:13.5px; line-height:1.65; margin:0; color:var(--ink); opacity:0.8; }
+  .how-flow-note{
+    margin-top:22px; background:#fff; border-left:4px solid var(--orange); border-radius:0 10px 10px 0;
+    padding:14px 20px; font-size:13.5px; line-height:1.7;
+  }
+  .how-flow-note b{ color:var(--orange-deep); }
+
+  /* ===== 홈: 파트너 단체 스트립 ===== */
+  .partner-strip{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .partner-card{
+    background:#fff; border:1.5px solid var(--line); border-radius:14px; overflow:hidden;
+    cursor:pointer; transition:transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .partner-card:hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(69,42,23,0.10); border-color:var(--orange-soft); }
+  .partner-card .photo{ height:96px; }
+  .partner-card .body{ padding:13px 15px; }
+  .partner-card .nm{ font-size:13.5px; font-weight:800; }
+  .partner-card .cat{ font-size:11px; color:var(--gray); margin-top:3px; font-weight:600; }
+
+  /* ===== 단체 소개 화면 ===== */
+  .org-hero{ height:280px; position:relative; }
+  .org-hero::after{
+    content:''; position:absolute; inset:0; z-index:2;
+    background:linear-gradient(180deg, rgba(50,28,12,0.05) 30%, rgba(50,28,12,0.78) 100%);
+  }
+  .org-hero .back-chip{
+    position:absolute; top:18px; left:36px; z-index:6; background:rgba(255,255,255,0.92); color:var(--ink);
+    font-size:12.5px; font-weight:800; padding:8px 16px; border-radius:20px; cursor:pointer;
+  }
+  .org-hero .back-chip:hover{ background:#fff; }
+  .org-hero-text{ position:absolute; bottom:0; left:0; right:0; z-index:4; padding:24px 36px; }
+  .org-hero-text .tag{
+    font-size:11px; font-weight:800; background:rgba(255,255,255,0.22); color:#fff;
+    padding:5px 12px; border-radius:8px; display:inline-block; margin-bottom:10px; backdrop-filter:blur(2px);
+  }
+  .org-hero-text h1{ color:#fff; font-size:26px; font-weight:900; margin:0 0 5px; }
+  .org-hero-text .sub{ color:rgba(255,255,255,0.86); font-size:13px; font-weight:600; }
+  .org-purpose{
+    background:var(--cream); border-left:4px solid var(--orange); border-radius:0 12px 12px 0;
+    padding:18px 22px; font-size:14.5px; line-height:1.8; margin:0 0 30px;
+  }
+  .org-purpose b{ color:var(--brown); }
+
+  /* ===== 설문 참여 화면 ===== */
+  .survey-shell{ max-width:720px; margin:0 auto; padding:48px 24px 72px; }
+  .crumb{ font-size:12.5px; color:var(--gray); font-weight:600; margin-bottom:22px; }
+  .crumb b{ color:var(--brown); }
+
+  .survey-intro-card{ background:#fff; border:1.5px solid var(--line); border-radius:20px; overflow:hidden; }
+  .survey-intro-card .photo{ height:200px; }
+  .survey-intro-card .body{ padding:30px 34px 34px; }
+  .survey-intro-card h1{ font-size:24px; font-weight:800; margin:0 0 10px; line-height:1.45; }
+  .intro-meta-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:22px 0; }
+  .intro-meta{ background:var(--cream); border-radius:12px; padding:14px; text-align:center; }
+  .intro-meta .v{ font-size:17px; font-weight:900; color:var(--orange-deep); }
+  .intro-meta .l{ font-size:11px; color:var(--gray); font-weight:700; margin-top:3px; }
+  .trust-note{
+    display:flex; gap:12px; background:var(--cream); border-radius:12px; padding:16px 18px;
+    font-size:13px; line-height:1.65; margin-bottom:24px; align-items:flex-start;
+  }
+  .trust-note .ic{ font-size:19px; flex-shrink:0; }
+  .trust-note b{ color:var(--brown); }
+
+  .progress-wrap{ margin-bottom:28px; }
+  .progress-label{ display:flex; justify-content:space-between; font-size:12.5px; font-weight:800; margin-bottom:8px; }
+  .progress-label .r{ color:var(--orange-deep); }
+  .progress-track{ background:var(--cream-dim); border-radius:6px; height:8px; overflow:hidden; }
+  .progress-bar{ height:100%; background:linear-gradient(90deg, var(--orange), var(--orange-deep)); border-radius:6px; transition:width .3s ease; }
+
+  .q-card{ background:#fff; border:1.5px solid var(--line); border-radius:20px; padding:36px; }
+  .q-num{ font-size:12.5px; font-weight:800; color:var(--orange-deep); letter-spacing:0.06em; margin-bottom:12px; }
+  .q-text{ font-size:20px; font-weight:700; line-height:1.55; margin:0 0 26px; }
+  .opt-list{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; align-items:center; gap:14px; border:1.5px solid var(--line); border-radius:14px;
+    padding:16px 20px; font-size:15px; font-weight:600; background:#fff; transition:all .13s; text-align:left; width:100%;
+  }
+  .opt:hover{ border-color:var(--orange); background:#FDF4EC; }
+  .opt .radio{
+    width:20px; height:20px; border-radius:50%; border:2px solid var(--line); flex-shrink:0; position:relative; transition:all .13s;
+  }
+  .opt.picked{ border-color:var(--orange); background:#FDF4EC; }
+  .opt.picked .radio{ border-color:var(--orange); }
+  .opt.picked .radio::after{ content:''; position:absolute; inset:3px; border-radius:50%; background:var(--orange); }
+
+  /* ===== 보상 선택 화면 ===== */
+  .reward-hero{ text-align:center; padding:16px 0 8px; }
+  .reward-hero .badge{ font-size:44px; margin-bottom:6px; }
+  .reward-hero h1{ font-size:26px; font-weight:900; margin:0 0 8px; }
+  .reward-hero h1 em{ font-style:normal; color:var(--orange-deep); }
+  .reward-hero .sub{ font-size:14px; color:var(--gray); margin-bottom:30px; }
+  .reward-choice{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .choice-card{
+    background:#fff; border:2px solid var(--line); border-radius:18px; padding:28px 24px; text-align:center;
+    transition:all .15s; display:flex; flex-direction:column; gap:6px; align-items:center;
+  }
+  .choice-card:hover{ border-color:var(--orange); transform:translateY(-3px); box-shadow:0 12px 28px rgba(69,42,23,0.12); }
+  .choice-card .ic{ font-size:32px; }
+  .choice-card h3{ font-size:17px; font-weight:800; margin:6px 0 2px; }
+  .choice-card p{ font-size:12.5px; color:var(--gray); line-height:1.6; margin:0 0 14px; }
+  .choice-card .btn{ width:100%; }
+  .choice-card.donate{ border-color:var(--orange-soft); background:linear-gradient(180deg,#fff 30%, #FDF4EC 100%); }
+  .reward-fineprint{ text-align:center; font-size:12px; color:var(--gray); margin-top:20px; line-height:1.7; }
+
+  /* ===== 임팩트 리포트 화면 ===== */
+  .impact-hero{ background:var(--brown-deep); color:#fff; padding:52px 36px 46px; position:relative; overflow:hidden; }
+  .impact-hero::after{
+    content:''; position:absolute; right:-60px; top:-60px; width:280px; height:280px; border-radius:50%;
+    background:radial-gradient(circle, rgba(217,112,44,0.35), transparent 70%);
+  }
+  .impact-hero .eyebrow{ font-size:12px; font-weight:800; letter-spacing:0.14em; color:#F7B97E; margin-bottom:12px; }
+  .impact-hero h1{ font-size:29px; font-weight:900; margin:0 0 10px; line-height:1.45; }
+  .impact-hero .sub{ font-size:14px; opacity:0.82; max-width:560px; line-height:1.7; }
+  .impact-numbers{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:30px; position:relative; z-index:2; }
+  .impact-num-card{ background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); border-radius:14px; padding:20px; }
+  .impact-num-card .v{ font-size:24px; font-weight:900; color:#F7B97E; }
+  .impact-num-card .l{ font-size:12px; opacity:0.78; margin-top:5px; font-weight:600; }
+
+  .fee-flow{ background:#fff; border:1.5px solid var(--line); border-radius:18px; padding:30px 34px; }
+  .fee-flow h3{ font-size:16px; font-weight:800; margin:0 0 6px; }
+  .fee-flow .desc{ font-size:13.5px; color:var(--gray); margin-bottom:22px; }
+  .fee-bar-wrap{ display:flex; height:44px; border-radius:12px; font-size:12.5px; font-weight:800; color:#fff; }
+  .fee-seg{ display:flex; align-items:center; justify-content:center; gap:4px; min-width:0; position:relative; cursor:default; }
+  .fee-seg:first-child{ border-radius:12px 0 0 12px; }
+  .fee-seg:last-child{ border-radius:0 12px 12px 0; }
+  /* 호버 시 금액 말풍선 */
+  .fee-seg::after{
+    content:attr(data-tip); position:absolute; bottom:calc(100% + 10px); left:50%;
+    transform:translateX(-50%) translateY(5px);
+    background:var(--brown-deep); color:#fff; font-size:11.5px; font-weight:800;
+    padding:6px 12px; border-radius:8px; white-space:nowrap;
+    opacity:0; pointer-events:none; transition:opacity .15s, transform .15s; z-index:6;
+    box-shadow:0 6px 16px rgba(0,0,0,0.2);
+  }
+  .fee-seg::before{
+    content:''; position:absolute; bottom:calc(100% + 4px); left:50%;
+    transform:translateX(-50%) translateY(5px);
+    border:6px solid transparent; border-top-color:var(--brown-deep); border-bottom:none;
+    opacity:0; pointer-events:none; transition:opacity .15s, transform .15s; z-index:6;
+  }
+  .fee-seg:hover::after, .fee-seg:hover::before{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .fee-seg:nth-child(1){ background:var(--orange); }
+  .fee-seg:nth-child(2){ background:var(--brown); }
+  .fee-seg:nth-child(3){ background:#A08874; }
+  .fee-legend{ display:flex; gap:22px; margin-top:14px; flex-wrap:wrap; }
+  .fee-legend .item{ display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:600; color:var(--gray); }
+  .fee-legend .sw{ width:12px; height:12px; border-radius:3px; }
+
+  /* WHO식 발간물 리스트 */
+  .report-list{ border-top:2px solid var(--ink); }
+  .report-row{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:17px 6px; border-bottom:1px solid var(--line); transition:background .12s; cursor:pointer;
+  }
+  .report-row:hover{ background:var(--cream); }
+  .report-row .info .t{ font-size:14.5px; font-weight:700; }
+  .report-row .info .d{ font-size:12px; color:var(--gray); margin-top:3px; font-weight:600; }
+  .report-row .dl{ font-size:12px; font-weight:800; color:var(--orange-deep); flex-shrink:0; }
+
+  /* ===== 마이지갑 화면 ===== */
+  .wallet-summary{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+  .wallet-summary .card{ background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:22px; }
+  .wallet-summary .card.hl{ background:linear-gradient(150deg, var(--orange), var(--orange-deep)); color:#fff; border:none; }
+  .wallet-summary .v{ font-size:25px; font-weight:900; color:var(--brown-deep); }
+  .wallet-summary .card.hl .v{ color:#fff; }
+  .wallet-summary .l{ font-size:12.5px; color:var(--gray); margin-top:5px; font-weight:700; }
+  .wallet-summary .card.hl .l{ color:rgba(255,255,255,0.85); }
+  .exchange-row{ display:flex; gap:10px; margin-bottom:36px; flex-wrap:wrap; }
+
+  .history-row{
+    display:flex; align-items:center; gap:16px; background:#fff; border:1.5px solid var(--line);
+    border-radius:14px; padding:16px 20px; margin-bottom:10px;
+  }
+  .history-row .ic{
+    width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    font-size:19px; flex-shrink:0;
+  }
+  .history-row .ic.earn{ background:#FDF0E3; }
+  .history-row .ic.donate{ background:#EEF5EF; }
+  .history-row .info{ flex:1; min-width:0; }
+  .history-row .t{ font-size:14px; font-weight:800; }
+  .history-row .d{ font-size:12px; color:var(--gray); margin-top:2px; font-weight:600; }
+  .history-row .amt{ font-size:15px; font-weight:900; flex-shrink:0; }
+  .history-row .amt.plus{ color:var(--orange-deep); }
+  .history-row .amt.gift{ color:var(--good); }
+  .empty-hint{ font-size:13.5px; color:var(--gray); text-align:center; padding:44px 0; }
+
+  /* ===== 푸터 (WHO식) ===== */
+  .footer{ background:var(--brown-deep); color:rgba(255,255,255,0.75); padding:40px 36px 30px; }
+  .footer .cols{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:28px; margin-bottom:28px; }
+  .footer h4{ font-size:13px; font-weight:800; color:#fff; margin:0 0 12px; letter-spacing:0.04em; }
+  .footer p, .footer li{ font-size:12.5px; line-height:1.8; margin:0; }
+  .footer ul{ list-style:none; padding:0; margin:0; }
+  .footer .logo{ font-size:19px; font-weight:900; color:#fff; margin-bottom:10px; }
+  .footer .logo em{ font-style:normal; color:#F7B97E; }
+  .footer .base{ border-top:1px solid rgba(255,255,255,0.14); padding-top:18px; font-size:11.5px; opacity:0.6; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+  /* ===== 토스트 ===== */
+  .toast{
+    position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px); z-index:200;
+    background:var(--brown-deep); color:#fff; padding:14px 26px; border-radius:30px; font-size:14px; font-weight:700;
+    opacity:0; transition:all .25s; box-shadow:0 10px 26px rgba(0,0,0,0.25); white-space:nowrap; max-width:90vw;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* ===================== 반응형 ===================== */
+  @media (max-width:980px){
+    .survey-grid{ grid-template-columns:1fr; }
+    .partner-strip{ grid-template-columns:repeat(2,1fr); }
+    .how-grid{ grid-template-columns:1fr; gap:22px; }
+    .footer .cols{ grid-template-columns:1fr 1fr; }
+    .nav{ padding:14px 24px; }
+    .utilbar{ padding:7px 24px; }
+    .body-pad{ padding:34px 24px 56px; }
+    .hero-inner{ padding:0 32px; }
+    .impact-hero{ padding:44px 24px 40px; }
+    .footer{ padding:36px 24px 26px; }
+    .org-hero .back-chip{ left:24px; }
+    .org-hero-text{ padding:22px 24px; }
+  }
+  @media (max-width:760px){
+    body{ font-size:15px; }
+    .utilbar .l span:nth-child(2){ display:none; }
+    .nav{ flex-wrap:wrap; gap:10px; padding:12px 16px; }
+    .nav .logo .ko{ font-size:20px; }
+    .nav .menu{ order:3; width:100%; gap:20px; font-size:13px; justify-content:flex-start; }
+    .nav .point-chip{ padding:6px 11px; font-size:11.5px; }
+
+    .hero{ height:400px; }
+    .hero-inner{ padding:0 20px; max-width:100%; }
+    .hero h1{ font-size:26px; }
+    .hero .sub{ font-size:14px; }
+    .stat-strip{ grid-template-columns:1fr; gap:16px; padding:22px 20px; }
+    .stat-strip .item{ border-left:none; border-top:1px solid rgba(255,255,255,0.16); padding-top:16px; }
+    .stat-strip .item:first-child{ border-top:none; padding-top:0; }
+
+    .body-pad{ padding:28px 16px 48px; }
+    .chip-row{ margin-left:0; }
+    .sec-sub{ margin-left:0; }
+    .survey-card .top{ flex-direction:column; }
+    .survey-card .photo{ width:100%; height:130px; }
+    .how-wrap{ padding:26px 18px; margin-top:44px; }
+    .partner-strip{ grid-template-columns:1fr 1fr; gap:10px; }
+
+    .survey-shell{ padding:32px 16px 56px; }
+    .survey-intro-card .body{ padding:22px 20px 26px; }
+    .survey-intro-card h1{ font-size:20px; }
+    .intro-meta-grid{ grid-template-columns:repeat(3,1fr); gap:7px; }
+    .intro-meta .v{ font-size:14.5px; }
+    .q-card{ padding:24px 18px; }
+    .q-text{ font-size:17.5px; }
+    .opt{ padding:14px 16px; font-size:14px; }
+    .reward-choice{ grid-template-columns:1fr; }
+
+    .impact-numbers{ grid-template-columns:1fr; }
+    .impact-hero h1{ font-size:23px; }
+    .fee-flow{ padding:22px 18px; }
+    .fee-bar-wrap{ font-size:10.5px; height:38px; }
+
+    .wallet-summary{ grid-template-columns:1fr; }
+    .footer .cols{ grid-template-columns:1fr; }
+
+    .org-hero{ height:230px; }
+    .org-hero .back-chip{ left:16px; top:14px; font-size:11.5px; padding:7px 13px; }
+    .org-hero-text{ padding:18px 16px; }
+    .org-hero-text h1{ font-size:21px; }
+    .org-purpose{ padding:15px 17px; font-size:13.5px; }
+  }
+  @media (max-width:420px){
+    .nav .menu{ gap:14px; font-size:12px; }
+    .hero h1{ font-size:22px; }
+    .reward-badge{ font-size:12.5px; padding:5px 11px; }
+    .exchange-row .btn{ flex:1 1 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   온답 ONDAP — 설문 리워드 × 공익 기부 결합형 리서치 플랫폼 데모
+   구조: 리서처가 설문을 의뢰 → 파트너 공익단체의 신뢰를 바탕으로
+   참여자를 모집 → 참여자는 보상을 받거나 기부로 전환 →
+   플랫폼 중개 수수료는 기부·단체 운영에 사용
+   화면: 홈(탐색) → 설문 참여 → 보상 선택 → 임팩트 리포트 / 마이지갑
+   ========================================================= */
+
+const CATS = ['전체','아동','노인','환경','동물'];
+
+const SURVEYS = {
+  s1: {
+    id:'s1', cat:'아동', title:'지역아동센터 방과후 프로그램 이용 경험 조사',
+    client:'서울시복지재단', partner:'온빛아동재단', partnerInitial:'온',
+    reward:5000, mins:7, nQ:3,
+    img:'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=900&q=75&fit=crop&auto=format',
+    desc:'방과후 돌봄 프로그램의 실제 이용 경험을 수집해, 아동 돌봄 정책 연구의 기초 자료로 활용됩니다.',
+    questions:[
+      { q:'최근 1년 사이, 지역아동센터 또는 방과후 돌봄 서비스를 이용해본 적이 있으신가요?',
+        opts:['직접 이용해본 적이 있다','가족·지인의 이용을 지켜본 적이 있다','이용 경험은 없지만 관심이 있다','전혀 관련 경험이 없다'] },
+      { q:'방과후 돌봄 서비스에서 가장 개선이 필요하다고 느끼는 부분은 무엇인가요?',
+        opts:['프로그램의 다양성','운영 시간의 유연성','시설·환경의 안전성','교사·인력의 전문성'] },
+      { q:'돌봄 프로그램 정보를 주로 어디에서 얻으시나요?',
+        opts:['학교·기관의 안내문','지자체 홈페이지·앱','온라인 커뮤니티·SNS','주변 지인의 소개'] }
+    ]
+  },
+  s2: {
+    id:'s2', cat:'노인', title:'시니어 디지털 금융 서비스 사용성 조사',
+    client:'한빛금융연구소', partner:'실버케어나눔회', partnerInitial:'실',
+    reward:5000, mins:10, nQ:3,
+    img:'https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=900&q=75&fit=crop&auto=format',
+    desc:'고령층이 모바일 금융 앱을 쓸 때 겪는 어려움을 조사해, 시니어 친화적 서비스 설계에 반영됩니다.',
+    questions:[
+      { q:'부모님 등 고령의 가족이 모바일 금융 앱을 사용할 때, 어려움을 겪는 모습을 본 적이 있으신가요?',
+        opts:['자주 본다','가끔 본다','거의 없다','잘 모르겠다'] },
+      { q:'고령층에게 가장 큰 장벽이 된다고 생각하는 요소는 무엇인가요?',
+        opts:['작은 글씨와 복잡한 화면','인증(비밀번호·OTP) 절차','금융 용어의 어려움','보이스피싱 등 보안 불안'] },
+      { q:'시니어용 금융 앱에 가장 필요한 기능은 무엇이라고 생각하시나요?',
+        opts:['큰 글씨·간소화 모드','가족 보호자 연동 기능','전화 상담 원터치 연결','사기 의심 거래 자동 경고'] }
+    ]
+  },
+  s3: {
+    id:'s3', cat:'환경', title:'제로웨이스트 소비 행태 및 인식 조사',
+    client:'그린리서치', partner:'푸른숲재단', partnerInitial:'푸',
+    reward:4000, mins:5, nQ:3,
+    img:'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=900&q=75&fit=crop&auto=format',
+    desc:'일회용품 사용과 친환경 소비 습관에 대한 인식을 수집해, 환경 캠페인 설계에 활용됩니다.',
+    questions:[
+      { q:'평소 장을 볼 때 일회용 비닐 대신 장바구니·다회용기를 얼마나 사용하시나요?',
+        opts:['거의 항상 사용한다','절반 정도 사용한다','가끔 사용한다','거의 사용하지 않는다'] },
+      { q:'친환경 제품 구매를 망설이게 하는 가장 큰 이유는 무엇인가요?',
+        opts:['일반 제품보다 비싼 가격','구매처를 찾기 어려움','품질에 대한 불신','효과에 대한 회의감'] },
+      { q:'기업의 환경 활동 중 가장 신뢰가 가는 방식은 무엇인가요?',
+        opts:['포장재 감축·리필 판매','수익 일부 환경단체 기부','탄소배출량 투명 공개','재활용 소재 사용'] }
+    ]
+  },
+  s4: {
+    id:'s4', cat:'동물', title:'유기동물 입양 문화에 대한 인식 조사',
+    client:'동물복지연구팀 (대학 산학협력단)', partner:'함께걸음보호소', partnerInitial:'함',
+    reward:5000, mins:8, nQ:3,
+    img:'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=900&q=75&fit=crop&auto=format',
+    desc:'유기동물 입양에 대한 인식과 장벽을 조사해, 입양 활성화 정책 연구에 사용됩니다.',
+    questions:[
+      { q:'반려동물을 새로 맞이한다면, 유기동물 입양을 고려해보시겠어요?',
+        opts:['우선적으로 고려하겠다','펫샵·분양과 함께 고려하겠다','고려하지 않을 것 같다','반려동물 계획이 없다'] },
+      { q:'유기동물 입양을 망설이게 하는 가장 큰 이유는 무엇이라고 생각하시나요?',
+        opts:['건강·행동 문제에 대한 걱정','입양 절차의 복잡함','품종·나이 선택의 제한','정보 부족'] },
+      { q:'입양 문화 확산을 위해 가장 효과적인 방법은 무엇일까요?',
+        opts:['입양 후 의료비 지원','보호소 동물 정보 투명 공개','입양 전 임시보호 제도','미디어 캠페인 확대'] }
+    ]
+  }
+};
+
+const PARTNERS = [
+  { nm:'온빛아동재단', cat:'아동 · 교육', est:'2014년', donated:'312만원', surveys:9,
+    img:'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&q=70&fit=crop&auto=format',
+    purpose:'교육 사각지대에 놓인 아동에게 <b>안정적인 학습 환경과 정서 지원</b>을 제공하는 것을 목적으로 합니다. 지역아동센터와 연계한 방과후 학습 멘토링, 학습 키트 지원 사업을 운영하고 있습니다.',
+    news:[
+      { t:'여름방학 학습 키트 500세트 전달 완료', d:'2026.06.24 · 사업 소식' },
+      { t:'지역아동센터 3곳과 학습 멘토링 협약 체결', d:'2026.06.10 · 협력' },
+      { t:'2026 상반기 후원금 집행 내역 공개', d:'2026.07.01 · 투명성 보고' }
+    ] },
+  { nm:'실버케어나눔회', cat:'노인 · 돌봄', est:'2011년', donated:'268만원', surveys:7,
+    img:'https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=500&q=70&fit=crop&auto=format',
+    purpose:'홀몸 어르신의 <b>일상 돌봄과 디지털 격차 해소</b>를 목적으로 활동합니다. 방문 안부 확인, 시니어 스마트폰 교실, 고령층 금융 안전 교육을 운영하고 있습니다.',
+    news:[
+      { t:'온답 설문 결과 기반 「시니어 금융 안전 가이드북」 발간', d:'2026.06.27 · 발간물' },
+      { t:'폭염 대비 홀몸 어르신 방문 안부 캠페인 시작', d:'2026.06.20 · 캠페인' },
+      { t:'시니어 스마트폰 교실 12기 수료식', d:'2026.06.05 · 교육' }
+    ] },
+  { nm:'푸른숲재단', cat:'환경 · 생태', est:'2016년', donated:'241만원', surveys:6,
+    img:'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500&q=70&fit=crop&auto=format',
+    purpose:'도시숲 조성과 <b>생활 속 제로웨이스트 문화 확산</b>을 목적으로 합니다. 시민 참여 나무심기, 리필스테이션 확대, 환경 인식 조사 사업을 진행하고 있습니다.',
+    news:[
+      { t:'도시숲 나무심기 누적 1만 그루 달성', d:'2026.06.30 · 사업 소식' },
+      { t:'제로웨이스트 매장 지도 시즌2 공개', d:'2026.06.18 · 캠페인' },
+      { t:'기업 협력 리필스테이션 시범 운영 시작', d:'2026.06.02 · 협력' }
+    ] },
+  { nm:'함께걸음보호소', cat:'동물 · 보호', est:'2013년', donated:'205만원', surveys:5,
+    img:'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=500&q=70&fit=crop&auto=format',
+    purpose:'유기동물의 <b>구조·치료와 입양 연계</b>를 목적으로 활동합니다. 보호 동물 정보의 투명한 공개와 입양 전 임시보호 프로그램을 운영하고 있습니다.',
+    news:[
+      { t:'6월 한 달간 입양 27건 성사', d:'2026.07.01 · 입양 소식' },
+      { t:'여름철 유기동물 구조 집중 캠페인', d:'2026.06.15 · 캠페인' },
+      { t:'입양 전 임시보호 프로그램 참여 가정 모집', d:'2026.06.03 · 모집' }
+    ] }
+];
+
+// 임팩트 리포트의 기준 수치 (플랫폼 전체 누적, 데모용)
+const BASE = { responses:12480, rewarded:62400000, donated:18720000 };
+
+const state = {
+  screen:'home',            // home | survey | impact | wallet
+  filterCat:'전체',
+  points:12000,             // 보유 포인트 (기존 참여분)
+  myDonated:0,              // 내가 기부로 전환한 누적액
+  completed:new Set(),      // 완료한 설문 id
+  history:[
+    { type:'earn', title:'1인 가구 식생활 실태 조사', sub:'2026.06.28 참여 완료', amt:5000 },
+    { type:'donate', title:'푸른숲재단 기부 전환', sub:'2026.06.21 · 청년 주거 인식 조사 보상', amt:4000 },
+    { type:'earn', title:'청년 주거 인식 조사', sub:'2026.06.21 참여 완료', amt:4000 },
+    { type:'earn', title:'대중교통 이용 만족도 조사', sub:'2026.06.14 참여 완료', amt:3000 }
+  ],
+  // 설문 진행 상태
+  activeSurvey:null,
+  phase:'intro',            // intro | q | reward
+  qIndex:0,
+  answers:[]
+};
+state.myDonated = 4000;
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=> t.classList.remove('show'), 2400);
+}
+
+function go(screen){
+  state.screen = screen;
+  render();
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+function fmt(n){ return n.toLocaleString('ko-KR'); }
+
+/* ===== 단체 소개 페이지 이동 ===== */
+function goOrg(i){
+  state.activeOrg = i;
+  state.orgReturn = state.screen;   // 돌아갈 화면 기억
+  go('org');
+}
+function goOrgBack(){
+  go(state.orgReturn && state.orgReturn !== 'org' ? state.orgReturn : 'home');
+}
+
+/* ===== 숫자 카운트업 애니메이션 =====
+   .cnt[data-target] 요소를 0부터 목표값까지 약 1.4초간 easeOutCubic으로 증가.
+   화면 재진입 시마다 재생, 같은 화면 내 재렌더(필터 등)에서는 즉시 확정값 표시. */
+function animateCounts(instant){
+  document.querySelectorAll('.cnt').forEach(el => {
+    const target = Math.round(parseFloat(el.dataset.target));
+    if(instant){ el.textContent = fmt(target); return; }
+    const dur = 1400;
+    const t0 = performance.now();
+    function tick(now){
+      const p = Math.min((now - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(target * eased));
+      if(p < 1 && el.isConnected) requestAnimationFrame(tick);
+      else el.textContent = fmt(target);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ===== 설문 플로우 ===== */
+function startSurvey(id){
+  if(state.completed.has(id)){ toast('이미 참여를 완료한 설문이에요'); return; }
+  state.activeSurvey = id;
+  state.phase = 'intro';
+  state.qIndex = 0;
+  state.answers = [];
+  go('survey');
+}
+function beginQuestions(){
+  state.phase = 'q';
+  render();
+  window.scrollTo({top:0, behavior:'instant'});
+}
+function pickOpt(i){
+  const sv = SURVEYS[state.activeSurvey];
+  state.answers[state.qIndex] = i;
+  // 선택 표시 후 잠깐 뒤 다음 문항으로
+  render();
+  setTimeout(()=>{
+    if(state.qIndex < sv.questions.length - 1){
+      state.qIndex++;
+    } else {
+      state.phase = 'reward';
+      state.completed.add(sv.id);
+    }
+    render();
+    window.scrollTo({top:0, behavior:'instant'});
+  }, 320);
+}
+function receiveReward(){
+  const sv = SURVEYS[state.activeSurvey];
+  state.points += sv.reward;
+  state.history.unshift({ type:'earn', title:sv.title, sub:'2026.07.03 참여 완료', amt:sv.reward });
+  toast(fmt(sv.reward) + 'P가 지갑에 적립되었어요');
+  go('wallet');
+}
+function donateReward(){
+  const sv = SURVEYS[state.activeSurvey];
+  state.myDonated += sv.reward;
+  state.history.unshift({ type:'donate', title:sv.partner + ' 기부 전환', sub:'2026.07.03 · ' + sv.title + ' 보상', amt:sv.reward });
+  toast(sv.partner + '에 ' + fmt(sv.reward) + '원이 전달될 예정이에요');
+  go('impact');
+}
+function onCatClick(c){
+  state.filterCat = c;
+  render();
+}
+</script>
+<script>
+/* ===== 공통 레이아웃 ===== */
+function utilbarHtml(){
+  return `
+  <div class="utilbar">
+    <div class="l">
+      <span>공익 리서치 중개 플랫폼</span>
+      <span>파트너 단체 12곳 · 검증된 리서치만 게재</span>
+    </div>
+    <div class="l">
+      <button onclick="toast('리서치 의뢰 문의는 데모에서 제공되지 않아요')">리서치 의뢰하기</button>
+      <button onclick="toast('데모 계정으로 로그인되어 있어요')">김온답 님</button>
+    </div>
+  </div>`;
+}
+
+function navHtml(active){
+  return `
+  ${utilbarHtml()}
+  <div class="nav">
+    <div class="logo" onclick="go('home')">
+      <span class="ko">온<em>답</em></span>
+      <span class="en">ONDAP</span>
+    </div>
+    <div class="menu">
+      <button class="${active==='home'?'on':''}" onclick="go('home')">설문 참여</button>
+      <button class="${active==='impact'?'on':''}" onclick="go('impact')">임팩트 리포트</button>
+      <button class="${active==='wallet'?'on':''}" onclick="go('wallet')">마이지갑</button>
+    </div>
+    <div class="actions">
+      <div class="point-chip" onclick="go('wallet')">💰 <b>${fmt(state.points)}P</b></div>
+    </div>
+  </div>`;
+}
+
+function footerHtml(){
+  return `
+  <div class="footer">
+    <div class="cols">
+      <div>
+        <div class="logo">온<em>답</em> ONDAP</div>
+        <p>온답은 공익단체와 함께하는 리서치 중개 플랫폼입니다. 참여자의 답변은 정직한 보상이 되고, 리서치 중개 수수료는 파트너 단체의 활동과 기부로 이어집니다.</p>
+      </div>
+      <div>
+        <h4>서비스</h4>
+        <ul>
+          <li>설문 참여하기</li>
+          <li>리서치 의뢰하기</li>
+          <li>파트너 단체 소개</li>
+          <li>기부금 집행 보고</li>
+        </ul>
+      </div>
+      <div>
+        <h4>신뢰와 투명성</h4>
+        <ul>
+          <li>외부 회계감사 보고서</li>
+          <li>개인정보 처리방침</li>
+          <li>리서치 윤리 가이드라인</li>
+          <li>기부금 영수증 안내</li>
+        </ul>
+      </div>
+    </div>
+    <div class="base">
+      <span>© 2026 ONDAP. 본 화면은 포트폴리오용 데모입니다.</span>
+      <span>모든 수치와 단체명은 가상의 예시입니다</span>
+    </div>
+  </div>`;
+}
+
+/* ===== 홈 화면 ===== */
+function renderHome(){
+  const list = Object.values(SURVEYS).filter(s => state.filterCat==='전체' || s.cat===state.filterCat);
+
+  const cards = list.map(sv=>{
+    const done = state.completed.has(sv.id);
+    return `
+    <div class="survey-card">
+      <div class="top">
+        <div class="photo"><img class="real" src="${sv.img}" alt="${sv.partner} 활동 현장"></div>
+        <div class="head">
+          <div class="cat">${sv.cat} <span class="verified">✓ 검증된 리서치</span></div>
+          <h3>${sv.title}</h3>
+          <div class="meta">약 <b>${sv.mins}분</b> · ${sv.nQ}문항 · 의뢰 <b>${sv.client}</b></div>
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="partner"><span class="dot">${sv.partnerInitial}</span><span>${sv.partner} 검증</span></div>
+        ${done
+          ? `<span class="done-badge">참여 완료</span>`
+          : `<button class="reward-badge" onclick="startSurvey('${sv.id}')">${fmt(sv.reward)}P 받기 →</button>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  ${navHtml('home')}
+
+  <div class="hero photo">
+    <img class="real" src="https://images.unsplash.com/photo-1652971876875-05db98fab376?w=1400&q=75&fit=crop&auto=format" alt="봉사자들이 함께 모인 현장">
+    <div class="hero-inner">
+      <span class="hero-eyebrow">🤝 공익단체와 함께하는 설문 리워드</span>
+      <h1 class="serif">10분의 답변이<br><em>정직한 보상</em>과 <em>따뜻한 기부</em>가 됩니다</h1>
+      <div class="sub">온답의 모든 설문은 공익단체가 함께 검증합니다. 참여하면 보상을 드리고, 원하시면 그 보상을 원클릭으로 기부에 보탤 수 있어요.</div>
+      <div class="cta-row">
+        <a class="btn lg" onclick="document.getElementById('surveyList').scrollIntoView({behavior:'smooth'})">지금 설문 참여하기</a>
+        <a class="btn lg ghost" style="border-color:rgba(255,255,255,0.6);color:#fff;" onclick="go('impact')">투명성 보고 보기</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-strip">
+    <div class="item"><div class="v"><span class="cnt" data-target="${BASE.responses}">0</span>건</div><div class="l">누적 설문 응답</div></div>
+    <div class="item"><div class="v"><span class="cnt" data-target="${BASE.rewarded/10000}">0</span>만원</div><div class="l">참여자에게 전달된 보상</div></div>
+    <div class="item"><div class="v"><span class="cnt" data-target="${Math.round((BASE.donated + state.myDonated)/10000)}">0</span>만원</div><div class="l">기부로 이어진 금액</div></div>
+  </div>
+
+  <div class="body-pad">
+    <div id="surveyList">
+      <div class="sec-head"><h2>지금 참여할 수 있는 설문</h2></div>
+      <p class="sec-sub">모든 설문은 의뢰 기관과 파트너 공익단체의 검증을 거쳐 게재됩니다.</p>
+      <div class="chip-row">
+        ${CATS.map(c=>`<span class="chip ${state.filterCat===c?'on':''}" onclick="onCatClick('${c}')">${c}</span>`).join('')}
+      </div>
+      ${list.length ? `<div class="survey-grid">${cards}</div>` : `<div class="empty-hint">이 분야의 설문은 준비 중이에요.</div>`}
+    </div>
+
+    <div class="how-wrap">
+      <div class="sec-head"><h2>온답은 이렇게 운영됩니다</h2></div>
+      <p class="sec-sub">리서처, 참여자, 공익단체 — 세 주체가 모두 얻어가는 구조입니다.</p>
+      <div class="how-grid">
+        <div class="how-card">
+          <span class="step">STEP 1 · 의뢰</span>
+          <div class="icon">🏛️</div>
+          <h3>리서처가 설문을 의뢰합니다</h3>
+          <p>기업·연구기관·공공기관이 공익 분야와 관련된 리서치를 의뢰하면, 해당 분야의 파트너 단체가 설문의 취지와 윤리성을 함께 검증합니다.</p>
+        </div>
+        <div class="how-card">
+          <span class="step">STEP 2 · 참여와 보상</span>
+          <div class="icon">✍️</div>
+          <h3>참여자는 답하고, 보상을 받습니다</h3>
+          <p>설문 하나를 완료할 때마다 정해진 포인트가 즉시 지급됩니다. 포인트는 현금으로 바꾸거나, 원클릭으로 파트너 단체에 기부할 수 있어요.</p>
+        </div>
+        <div class="how-card">
+          <span class="step">STEP 3 · 환원</span>
+          <div class="icon">🌱</div>
+          <h3>중개 수수료는 공익으로 돌아갑니다</h3>
+          <p>리서치 중개로 발생한 수수료의 60%는 파트너 단체 기부에, 30%는 단체 운영 지원에 쓰입니다. 집행 내역은 매월 투명하게 공개됩니다.</p>
+        </div>
+      </div>
+      <div class="how-flow-note">
+        <b>왜 공익단체와 함께하나요?</b> — 설문 리워드 서비스의 가장 큰 약점은 "보상이 정말 지급될까"라는 불신입니다. 온답은 공익단체가 보상 지급과 리서치 검증을 함께 보증해, 참여자와 리서처 모두가 믿을 수 있는 조사를 만듭니다.
+      </div>
+    </div>
+
+    <div style="margin-top:56px;">
+      <div class="sec-head"><h2>함께하는 파트너 단체</h2></div>
+      <p class="sec-sub">각 분야의 설문을 검증하고, 기부를 전달받는 공익단체입니다.</p>
+      <div class="partner-strip">
+        ${PARTNERS.map((p,i)=>`
+        <div class="partner-card" onclick="goOrg(${i})">
+          <div class="photo"><img class="real" src="${p.img}" alt="${p.nm} 활동 현장"></div>
+          <div class="body"><div class="nm">${p.nm}</div><div class="cat">${p.cat}</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  ${footerHtml()}
+  `;
+}
+</script>
+<script>
+/* ===== 설문 참여 화면 ===== */
+function renderSurvey(){
+  const sv = SURVEYS[state.activeSurvey];
+  if(!sv) return renderHome();
+
+  let inner = '';
+
+  if(state.phase === 'intro'){
+    inner = `
+    <div class="crumb">설문 참여 › <b>${sv.cat}</b> › ${sv.client} 의뢰</div>
+    <div class="survey-intro-card">
+      <div class="photo"><img class="real" src="${sv.img}" alt="${sv.partner} 활동 현장"></div>
+      <div class="body">
+        <h1 class="serif">${sv.title}</h1>
+        <p style="font-size:14.5px; line-height:1.75; color:var(--ink); opacity:0.85; margin:0;">${sv.desc}</p>
+        <div class="intro-meta-grid">
+          <div class="intro-meta"><div class="v">${fmt(sv.reward)}P</div><div class="l">완료 보상</div></div>
+          <div class="intro-meta"><div class="v">약 ${sv.mins}분</div><div class="l">예상 소요</div></div>
+          <div class="intro-meta"><div class="v">${sv.nQ}문항</div><div class="l">전체 문항</div></div>
+        </div>
+        <div class="trust-note">
+          <span class="ic">🛡️</span>
+          <span>이 설문은 <b>${sv.partner}</b>이(가) 취지와 윤리성을 검증했습니다. 응답은 익명으로 처리되며, 보상 지급은 파트너 단체가 함께 보증합니다.</span>
+        </div>
+        <a class="btn lg" style="width:100%;" onclick="beginQuestions()">설문 시작하기 →</a>
+      </div>
+    </div>`;
+  }
+
+  else if(state.phase === 'q'){
+    const total = sv.questions.length;
+    const cur = state.qIndex;
+    const q = sv.questions[cur];
+    const pct = Math.round((cur / total) * 100);
+    inner = `
+    <div class="crumb">설문 참여 › <b>${sv.title}</b></div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>${cur + 1} / ${total} 문항</span>
+        <span class="r">완료 시 ${fmt(sv.reward)}P</span>
+      </div>
+      <div class="progress-track"><div class="progress-bar" style="width:${pct}%;"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">Q${cur + 1}.</div>
+      <p class="q-text serif">${q.q}</p>
+      <div class="opt-list">
+        ${q.opts.map((o,i)=>`
+        <button class="opt ${state.answers[cur]===i?'picked':''}" onclick="pickOpt(${i})">
+          <span class="radio"></span><span>${o}</span>
+        </button>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  else if(state.phase === 'reward'){
+    inner = `
+    <div class="reward-hero">
+      <div class="badge">🎁</div>
+      <h1 class="serif">답변이 도착했어요.<br><em>${fmt(sv.reward)}P</em>는 어떻게 쓸까요?</h1>
+      <div class="sub">소중한 ${sv.questions.length}개의 답변, 감사합니다. 보상의 사용처를 직접 선택하세요.</div>
+    </div>
+    <div class="reward-choice">
+      <div class="choice-card">
+        <span class="ic">💰</span>
+        <h3>내 지갑으로 받기</h3>
+        <p>포인트로 적립한 뒤 현금 전환이나<br>기프티콘 교환에 쓸 수 있어요</p>
+        <a class="btn brown" onclick="receiveReward()">${fmt(sv.reward)}P 적립하기</a>
+      </div>
+      <div class="choice-card donate">
+        <span class="ic">🌱</span>
+        <h3>기부로 전환하기</h3>
+        <p>이 설문을 검증한 <b>${sv.partner}</b>에<br>전액이 그대로 전달돼요</p>
+        <a class="btn" onclick="donateReward()">${fmt(sv.reward)}원 기부하기</a>
+      </div>
+    </div>
+    <div class="reward-fineprint">기부 전환 시 기부금 영수증 발급이 가능하며, 전달 내역은 임팩트 리포트에서 확인할 수 있어요.<br>지금 결정하지 않아도 마이지갑에서 언제든 기부로 전환할 수 있습니다.</div>`;
+  }
+
+  return `
+  ${navHtml('home')}
+  <div class="survey-shell">${inner}</div>
+  ${footerHtml()}
+  `;
+}
+</script>
+<script>
+/* ===== 임팩트 리포트 화면 ===== */
+function renderImpact(){
+  const totalDonated = BASE.donated + state.myDonated;
+  return `
+  ${navHtml('impact')}
+
+  <div class="impact-hero">
+    <div class="eyebrow">IMPACT REPORT · 2026년 상반기</div>
+    <h1 class="serif">모인 답변은,<br>이렇게 온기가 되었습니다</h1>
+    <div class="sub">온답은 리서치 중개로 발생한 모든 수수료의 사용처를 매월 공개합니다. 참여자가 기부로 전환한 금액은 수수료 없이 전액 파트너 단체에 전달됩니다.</div>
+    <div class="impact-numbers">
+      <div class="impact-num-card"><div class="v"><span class="cnt" data-target="${totalDonated}">0</span>원</div><div class="l">누적 기부 전달액 (수수료 환원 + 참여자 전환)</div></div>
+      <div class="impact-num-card"><div class="v"><span class="cnt" data-target="${BASE.responses}">0</span>건</div><div class="l">누적 설문 응답 수</div></div>
+      <div class="impact-num-card"><div class="v">12곳</div><div class="l">기부를 전달받은 파트너 단체</div></div>
+    </div>
+  </div>
+
+  <div class="body-pad">
+    <div class="sec-head"><h2>중개 수수료는 이렇게 쓰입니다</h2></div>
+    <p class="sec-sub">리서처가 지불한 의뢰비 중 참여자 보상을 제외한 중개 수수료의 배분 구조입니다.</p>
+    <div class="fee-flow">
+      <h3>2026년 상반기 수수료 배분</h3>
+      <div class="desc">총 수수료 3,120만원 기준</div>
+      <div class="fee-bar-wrap">
+        <div class="fee-seg" data-tip="1,872만원" style="flex:60;">기부 60%</div>
+        <div class="fee-seg" data-tip="936만원" style="flex:30;">단체 운영 지원 30%</div>
+        <div class="fee-seg" data-tip="312만원" style="flex:10;">플랫폼 10%</div>
+      </div>
+      <div class="fee-legend">
+        <span class="item"><span class="sw" style="background:var(--orange);"></span>파트너 단체 기부 — 1,872만원</span>
+        <span class="item"><span class="sw" style="background:var(--brown);"></span>단체 운영·인건비 지원 — 936만원</span>
+        <span class="item"><span class="sw" style="background:#A08874;"></span>플랫폼 운영 — 312만원</span>
+      </div>
+    </div>
+
+    <div style="margin-top:52px;">
+      <div class="sec-head"><h2>기부금 집행 보고서</h2></div>
+      <p class="sec-sub">매월 발행되는 집행 보고서를 누구나 열람할 수 있습니다.</p>
+      <div class="report-list">
+        ${[
+          {t:'2026년 6월 기부금 집행 보고서', d:'2026.07.01 발행 · 외부 회계법인 검토 완료'},
+          {t:'2026년 5월 기부금 집행 보고서', d:'2026.06.01 발행 · 외부 회계법인 검토 완료'},
+          {t:'2026년 4월 기부금 집행 보고서', d:'2026.05.01 발행 · 외부 회계법인 검토 완료'},
+          {t:'2026년 1분기 리서치 윤리 심의 결과', d:'2026.04.10 발행 · 파트너 단체 공동 심의'}
+        ].map(r=>`
+        <div class="report-row" onclick="toast('보고서 열람은 데모에서 제공되지 않아요')">
+          <div class="info"><div class="t">${r.t}</div><div class="d">${r.d}</div></div>
+          <span class="dl">PDF 열람 ↓</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div style="margin-top:52px;">
+      <div class="sec-head"><h2>기부를 전달받은 단체</h2></div>
+      <p class="sec-sub">전달된 기부금은 각 단체의 활동 보고와 함께 공개됩니다.</p>
+      <div class="partner-strip">
+        ${PARTNERS.map((p,i)=>`
+        <div class="partner-card" onclick="goOrg(${i})">
+          <div class="photo"><img class="real" src="${p.img}" alt="${p.nm} 활동 현장"></div>
+          <div class="body"><div class="nm">${p.nm}</div><div class="cat">${p.cat}</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  ${footerHtml()}
+  `;
+}
+
+/* ===== 마이지갑 화면 ===== */
+function renderWallet(){
+  const rows = state.history.map(h=>`
+    <div class="history-row">
+      <div class="ic ${h.type}">${h.type==='earn' ? '✍️' : '🌱'}</div>
+      <div class="info">
+        <div class="t">${h.title}</div>
+        <div class="d">${h.sub}</div>
+      </div>
+      <div class="amt ${h.type==='earn' ? 'plus' : 'gift'}">${h.type==='earn' ? '+' : ''}${fmt(h.amt)}${h.type==='earn' ? 'P' : '원 기부'}</div>
+    </div>`).join('');
+
+  return `
+  ${navHtml('wallet')}
+  <div class="body-pad">
+    <div class="sec-head"><h2>마이지갑</h2></div>
+    <p class="sec-sub">모은 포인트를 현금으로 바꾸거나, 언제든 기부로 전환할 수 있어요.</p>
+
+    <div class="wallet-summary">
+      <div class="card hl"><div class="v">${fmt(state.points)}P</div><div class="l">보유 포인트 (1P = 1원)</div></div>
+      <div class="card"><div class="v">${fmt(state.myDonated)}원</div><div class="l">내가 기부로 전환한 금액</div></div>
+      <div class="card"><div class="v">${state.history.filter(h=>h.type==='earn').length}건</div><div class="l">참여 완료한 설문</div></div>
+    </div>
+
+    <div class="exchange-row">
+      <a class="btn" onclick="toast('현금 전환은 데모에서 제공되지 않아요')">현금으로 전환</a>
+      <a class="btn ghost" onclick="toast('기프티콘 교환은 데모에서 제공되지 않아요')">기프티콘 교환</a>
+      <a class="btn brown" onclick="toast('보유 포인트의 기부 전환은 데모에서 제공되지 않아요')">포인트 기부하기 🌱</a>
+    </div>
+
+    <div class="sec-head"><h2>참여 · 기부 내역</h2></div>
+    <p class="sec-sub">최근 활동 순으로 표시됩니다.</p>
+    ${rows || '<div class="empty-hint">아직 활동 내역이 없어요. 첫 설문에 참여해보세요!</div>'}
+  </div>
+  ${footerHtml()}
+  `;
+}
+
+/* ===== 단체 소개 화면 ===== */
+function renderOrg(){
+  const o = PARTNERS[state.activeOrg];
+  if(!o) return renderHome();
+  return `
+  ${navHtml('')}
+  <div class="org-hero photo">
+    <img class="real" src="${o.img}" alt="${o.nm} 활동 현장">
+    <div class="back-chip" onclick="goOrgBack()">← 돌아가기</div>
+    <div class="org-hero-text">
+      <span class="tag">${o.cat}</span>
+      <h1 class="serif">${o.nm}</h1>
+      <div class="sub">${o.est} 설립 · 온답 검증 파트너</div>
+    </div>
+  </div>
+  <div class="body-pad">
+    <div class="sec-head"><h2>단체 소개</h2></div>
+    <p class="sec-sub">온답과 함께 설문을 검증하고 기부를 전달받는 파트너 단체입니다.</p>
+    <div class="org-purpose">${o.purpose}</div>
+
+    <div class="intro-meta-grid" style="max-width:560px; margin:0 0 40px;">
+      <div class="intro-meta"><div class="v">${o.est}</div><div class="l">설립</div></div>
+      <div class="intro-meta"><div class="v">${o.donated}</div><div class="l">온답 통해 전달된 기부</div></div>
+      <div class="intro-meta"><div class="v">${o.surveys}건</div><div class="l">검증한 설문</div></div>
+    </div>
+
+    <div class="sec-head"><h2>최근 활동 소식</h2></div>
+    <p class="sec-sub">단체가 직접 등록한 활동 현황입니다.</p>
+    <div class="report-list">
+      ${o.news.map(n=>`
+      <div class="report-row" onclick="toast('소식 본문 열람은 데모에서 제공되지 않아요')">
+        <div class="info"><div class="t">${n.t}</div><div class="d">${n.d}</div></div>
+        <span class="dl">자세히 →</span>
+      </div>`).join('')}
+    </div>
+
+    <div style="margin-top:36px; display:flex; gap:10px; flex-wrap:wrap;">
+      <a class="btn" onclick="toast('직접 기부는 데모에서 제공되지 않아요')">이 단체에 기부하기 🌱</a>
+      <a class="btn ghost" onclick="goOrgBack()">목록으로 돌아가기</a>
+    </div>
+  </div>
+  ${footerHtml()}
+  `;
+}
+</script>
+<script>
+function render(){
+  const app = document.getElementById('app');
+  let html = '';
+  if(state.screen === 'home') html = renderHome();
+  else if(state.screen === 'survey') html = renderSurvey();
+  else if(state.screen === 'impact') html = renderImpact();
+  else if(state.screen === 'wallet') html = renderWallet();
+  else if(state.screen === 'org') html = renderOrg();
+  const entered = state.screen !== window._prevScreen;
+  window._prevScreen = state.screen;
+  app.innerHTML = html;
+  animateCounts(!entered);
+}
+render();
+</script>
+</body>
+</html>

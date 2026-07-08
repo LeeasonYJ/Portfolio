@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DuckDuckRich Main Screen</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <style>
+
+    /* @charset "UTF-8"; */
+
+*{box-sizing: border-box; text-decoration: none; color: #333; list-style: none; margin: 0; padding: 0;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #fff; font-family: 'Paperlogy', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: auto;
+overflow-x: hidden; scrollbar-width: none; }
+html{scrollbar-width: none;}
+html::-webkit-scrollbar, ::-webkit-scrollbar {display: none;}
+.wrap{width: 402px; height: 874px;}
+.wrap > div{display: flex; flex-direction: column; text-align: center;}
+.up{display: flex; width: 100%; position: relative; margin: 20px auto;}
+
+
+/* fixed ask btn------ */
+  .ask-wrap {
+    position: fixed;
+    top: 24px;
+    right: 20px;
+    z-index: 1000;
+  }
+ 
+  .ask-btn-div {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #bdb4a7;
+    background: #FFFCE6;
+    color: #bdb4a7;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .15s ease;
+  }
+  .ask-btn-div:hover  { transform: scale(1.06); }
+  .ask-btn-div:active { transform: scale(0.95); }
+ 
+  /* 말풍선 (삼각형 + 사각형, 총 100 x 146): filter-shadow 실루엣 그림자 (not box shadow) */
+  .ask-bubble {
+    position: absolute;
+    top: calc(100% + 8px);   /* 버튼 아래쪽 */
+    right: 0;
+    width: 100px;
+    height: 146px;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
+    display: none;
+  }
+  .ask-bubble.open { display: block; }
+ 
+  .ask-bubble__tail {
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-bottom: 16px solid #b2b2b2;
+    margin-left: auto;
+    margin-right: 17px;
+    margin-bottom: 0;
+  }
+  .ask-bubble__list {
+    list-style: none;
+    width: 100px;
+    height: 130px;
+    background: #b2b2b2;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 14px;
+  }
+ 
+  .ask-item {
+    width: 80px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .ask-item__icon i{font-size: .8rem;}
+  .ask-item:hover .ask-item__icon { transform: scale(1.08); }
+ 
+  .ask-item__icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #fffce6;
+    flex-shrink: 0;
+    transition: transform .15s ease;
+  }
+   .ask-item__text {
+    width: 42px;
+    height: 28px;
+    color: #FFFCE6;
+    font-size: 10px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+  }
+
+
+  /* fixed main btn commom css ----- */
+.main-btn-div{
+    width: 402px; height: 105px; position: fixed; bottom: 0; left: 0; overflow: hidden;
+    display: flex !important; flex-direction: row !important; justify-content: space-around; align-items: center;
+    background: rgba(255, 255, 255, .15); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, .3); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, .15);
+    }
+.main-btn{width: 70px; height: 60px; padding: 10px 5px;}
+.main-btn:nth-child(2){width: 95px; height: 60px;}
+.main-btn > a{display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 10px;}
+.main-btn > a > span{display: block; font-size: .8rem; color: #005D39;}
+.icon-div{display: flex; align-items: center; justify-content: center; height: 24px;}
+.icon-div span{color: #005D39;}
+
+/* fixed main btn custom css */
+.main-btn:first-child > a > span{font-weight: 600;}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+.home {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+
+/* 첫 번째 메인 페이지 */
+.first{width: 402px; height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+
+.profile-div{width: calc(100% - 40px); height: 60px; display: flex; gap: 10px; justify-content: flex-start; align-items: center; margin-bottom: 20px; margin-left: 20px;}
+.profile-pic{width: 50px; height: 50px;}
+.profile-div strong{font-weight: 500; color: #9c8a11;}
+
+
+.myinsurbig{width: 370px; height: 140px; border-radius: 20px; background: #00995e; display: flex; flex-direction: column; margin-bottom: 20px; justify-content: space-between; align-items: center;}
+.myinsurbig-txt{width: 352px; height: 57px; padding: 20px 10px; text-align: left;}
+.myinsurbig-txt span{color: #FFFCE6; line-height: 30px;}
+.myinsurbig-txt span strong{color: rgb(255, 255, 255, .8); height: 30px; font-size: 1.5rem;}
+.myinsurbig-btn{display: flex; flex-direction: column; gap: 2px; width: 100%; height: 35px; justify-content: flex-end; align-items: end; padding: 15px 20px;}
+.inspect-btn a span, .refresh-btn a span{font-size: .8rem; color: #FFFCE6;}
+
+
+/* 접히는 내 보험 칸 */
+.insurance-section, .otherinsur {
+    width: 100%;
+    max-width: 362px;
+    background: #fffce9;
+    padding: 20px 20px;
+  }
+.insurance-section{margin-bottom: 20px;}
+.otherinsur{margin-bottom: 150px;}
+  .insurance-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 8px 16px;
+  }
+  .insurance-title { font-size: 20px; font-weight: 600; color: #333; }
+  .insurance-title .count { color: #9c8a11; margin-left: 8px; }
+  .detail-link {
+    font-size: 14px; font-weight: 400;
+    color: #9c8a11; text-decoration: none;
+  }
+  .detail-link::after { content: " ›"; }
+
+  /* ===== 목록 =====
+     display:none 대신 ul의 max-height를 JS로 조절해 트랜지션.
+     position: relative → li의 offsetTop이 ul 기준이 되어 접힘 높이 계산이 쉬움 */
+  .insurance-list {
+    list-style: none;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.4s ease;
+  }
+  .insurance-item { padding: 18px 16px; background: #fff;}
+
+  /* 접힌 상태에서 숨겨질 항목의 페이드 효과 (높이 애니메이션과 함께 진행) */
+  .insurance-item:nth-child(n + 3) {
+    transition: opacity 0.35s ease;
+  }
+  .insurance-list.collapsed .insurance-item:nth-child(n + 3) {
+    opacity: 0;
+  }
+
+  .item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .item-name  { font-size: 15px; font-weight: 700; color: #333; }
+  .item-price { font-size: 16px; font-weight: 800; color: #333; }
+
+  .item-bottom { display: flex; align-items: center; gap: 12px; }
+
+  .gauge {
+    flex: 1; height: 10px;
+    background: #fbf7e2;
+    border: 1px solid #c9bc6a;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .gauge-fill { height: 100%; background: #9c8a11;}
+  .item-rate {
+    font-size: 13px; font-weight: 700;
+    color: #9c8a11; white-space: nowrap;
+  }
+
+  .toggle-wrap { display: flex; justify-content: center; padding-top: 20px; }
+  .toggle-btn {
+    min-width: 100px;
+    padding: 10px 24px;
+    font-size: 15px; font-weight: 700;
+    color: #9c8a11;
+    background: #fff;
+    border: 1px solid #c9bc6a;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .toggle-btn:hover { background: #FDFAEA; }
+
+
+  </style>
+
+</head>
+<body>
+    <div class="wrap">
+
+        <div class="ask-wrap">
+    <div class="ask-btn-div" id="askBtn" role="button" tabindex="0"
+         aria-haspopup="true" aria-expanded="false" aria-label="문의하기 메뉴 열기">?</div>
+ 
+    <div class="ask-bubble" id="askBubble">
+      <div class="ask-bubble__tail"></div>
+      <ul class="ask-bubble__list">
+        <li class="ask-item" onclick="alert('카카오톡 문의로 이동');">
+          <div class="ask-item__icon"><i class="fa-brands fa-kakao-talk" style="color: #005D39;"></i></div>
+          <div class="ask-item__text">카카오톡<br>문의하기</div>
+        </li>
+        <li class="ask-item" onclick="alert('AI 챗봇 문의로 이동');">
+          <div class="ask-item__icon"><i class="fa-solid fa-headset" style="color: #005D39;"></i></div>
+          <div class="ask-item__text">AI 챗봇<br>문의하기</div>
+        </li>
+      </ul>
+    </div>
+        </div>
+
+        <div class="first">
+            
+            <div class="profile-div">
+                <div class="profile-pic">
+                    <img src="images/duckduckrich_logo/profil-pic.png" alt="profile">
+                </div>
+                <span>
+                    <strong>김준비</strong> 님, 어서 오세요!
+                </span>
+            </div>
+
+            <div class="myinsurbig">
+                <div class="myinsurbig-txt">
+                    <span>내 보험 4건 <br>
+                    <strong>월 보험료 290,460원</strong></span>
+                </div>
+                <div class="myinsurbig-btn">
+                  <div class="inspect-btn">
+                    <a href="#">
+                      <span>
+                        자세히 보기
+                        <i class="fa-solid fa-angle-right" style="color: rgb(255, 252, 230);"></i>
+                      </span>
+                    </a>
+                  </div> <!-- inspect-btn end -->
+                  <div class="refresh-btn">
+                    <a href="#">
+                      <span>
+                        2026.05.27
+                        <i class="fa-solid fa-arrow-rotate-right" style="color: rgb(255, 252, 230);"></i>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+            </div><!-- myinsurbig end -->
+
+            <section class="insurance-section">
+    <div class="insurance-header">
+      <h2 class="insurance-title">내 보험 <span class="count">4건</span></h2>
+      <a href="#" class="detail-link">자세히 보기</a>
+    </div>
+
+    <ul class="insurance-list collapsed" id="insuranceList">
+      <li class="insurance-item">
+        <div class="item-top">
+          <span class="item-name">태아 · 어린이 보험</span>
+          <span class="item-price">월 44,500원</span>
+        </div>
+        <div class="item-bottom">
+          <div class="gauge"><div class="gauge-fill" style="width: 14%"></div></div>
+          <span class="item-rate">14% 납입 중</span>
+        </div>
+      </li>
+
+      <li class="insurance-item">
+        <div class="item-top">
+          <span class="item-name">종합보험</span>
+          <span class="item-price">월 24,000원</span>
+        </div>
+        <div class="item-bottom">
+          <div class="gauge"><div class="gauge-fill" style="width: 67%"></div></div>
+          <span class="item-rate">67% 납입 중</span>
+        </div>
+      </li>
+
+      <li class="insurance-item">
+        <div class="item-top">
+          <span class="item-name">연금 · 연금저축 보험</span>
+          <span class="item-price">월 32,000원</span>
+        </div>
+        <div class="item-bottom">
+          <div class="gauge"><div class="gauge-fill" style="width: 67%"></div></div>
+          <span class="item-rate">67% 납입 중</span>
+        </div>
+      </li>
+
+      <li class="insurance-item">
+        <div class="item-top">
+          <span class="item-name">자동차 · 운전자 보험</span>
+          <span class="item-price">월 15,000원</span>
+        </div>
+        <div class="item-bottom">
+          <div class="gauge"><div class="gauge-fill" style="width: 67%"></div></div>
+          <span class="item-rate">67% 납입 중</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="toggle-wrap">
+      <button type="button" class="toggle-btn" id="toggleBtn" aria-expanded="false">더보기</button>
+    </div>
+            </section> <!-- insurance-section end -->
+
+            <div class="otherinsur">
+              <div class="insurance-header">
+                <h2 class="insurance-title">
+                  내 보험
+                  <span>3건</span>
+                </h2>
+                <a href="#" class="detail-link">자세히 보기</a>
+              </div>
+
+              <ul class="otherinsur-list">
+                <li class="insurance-item">
+                  <div class="item-top">
+                  <span>연금 · 연금저축 보험</span>
+                  <span>김오리 님의 보험</span>
+                  </div>
+                  <div class="item-bottom">
+                    <div class="gauge">
+                      <div class="gauge-fill" style="width: 14%;"></div>
+                    </div>
+                      <div class="item-rate">14% 납입 중</div>
+                  </div>
+                </li>
+
+                <li class="insurance-item">
+                  <div class="item-top">
+                  <span>자동차 · 운전자 보험</span>
+                  <span>김청동 님의 보험</span>
+                  </div>
+                  <div class="item-bottom">
+                    <div class="gauge">
+                      <div class="gauge-fill" style="width: 36%;"></div>
+                    </div>
+                      <div class="item-rate">36% 납입 중</div>
+                  </div>
+                </li>
+
+                <li class="insurance-item">
+                  <div class="item-top">
+                  <span>실손의료비 보험</span>
+                  <span>이쇠오리 님의 보험</span>
+                  </div>
+                  <div class="item-bottom">
+                    <div class="gauge">
+                      <div class="gauge-fill" style="width: 28%;"></div>
+                    </div>
+                      <div class="item-rate">28% 납입 중</div>
+                  </div>
+                </li>
+              </ul>
+            </div> <!-- otherinsur end -->
+
+        </div> <!-- first div end-->
+
+        <div class="main-btn-div">
+
+            <div class="main-btn">
+                <a href="index-7.html">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined home">
+                    home
+                    </span>
+                </div>
+                <span>홈</span>
+                </a>
+            </div>
+
+            <div class="main-btn">
+                <a href="index-8.html">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined hidden">
+                    insert_chart
+                    </span>
+                </div>
+                <span>숨은 보험금 조회</span>
+                </a>
+            </div>
+
+            <div class="main-btn">
+                <a href="index-12.html">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined getinsur">
+                    receipt_long
+                    </span>
+                </div>
+                <span>보험금 청구</span>
+                </a>
+            </div>
+
+            <div class="main-btn">
+                <a href="#">
+                <div class="icon-div">
+                    <span class="material-symbols-outlined search">
+                    search
+                    </span>
+                </div>
+                <span>검색</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="js/jquery-4.0.0.min.js"></script>
+
+    <script>
+
+      //-------------문의 버튼 고정----------
+    const askBtn    = document.getElementById('askBtn');
+    const askBubble = document.getElementById('askBubble');
+ 
+    function toggleBubble(force) {
+      const open = force !== undefined ? force : !askBubble.classList.contains('open');
+      askBubble.classList.toggle('open', open);
+      askBtn.setAttribute('aria-expanded', open);
+    }
+ 
+    askBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleBubble();
+    });
+ 
+    // 키보드 접근성 (Enter / Space 로 토글)
+    askBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleBubble();
+      }
+      if (e.key === 'Escape') toggleBubble(false);
+    });
+ 
+    // 바깥 영역 클릭 시 닫기
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.ask-wrap')) toggleBubble(false);
+    });
+
+
+    //----------내 보험 접기 칸----------
+    const list      = document.getElementById('insuranceList');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const items     = list.querySelectorAll('.insurance-item');
+
+    const COLLAPSED_COUNT = 2;   // 접힌 상태에서 보여줄 li 개수
+
+    // 접힌 상태의 높이 = (COLLAPSED_COUNT + 1)번째 li가 시작되는 위치
+    // ul이 position: relative라서 offsetTop이 ul 기준으로 계산됨
+    function collapsedHeight() {
+      return items[COLLAPSED_COUNT].offsetTop;
+    }
+
+    // 현재 상태(collapsed 클래스 유무)에 맞는 max-height를 적용
+    function applyHeight() {
+      const isCollapsed = list.classList.contains('collapsed');
+      list.style.maxHeight = (isCollapsed ? collapsedHeight() : list.scrollHeight) + 'px';
+    }
+
+    // 초기 상태: 접힌 높이로 세팅 (트랜지션 없이 바로 적용되도록 먼저 실행)
+    applyHeight();
+
+    toggleBtn.addEventListener('click', () => {
+      const isCollapsed = list.classList.toggle('collapsed');
+      applyHeight();
+      toggleBtn.textContent = isCollapsed ? '더보기' : '접기';
+      toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+    });
+
+    // 창 크기가 바뀌면 li 높이도 달라질 수 있으므로 다시 계산
+    window.addEventListener('resize', applyHeight);
+
+  </script>
+
+</body>
+</html>

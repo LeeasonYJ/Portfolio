@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DuckDuckRich Flash Screen</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css">
+    <style>
+/* @charset "UTF-8"; */
+*{box-sizing: border-box;}
+body{margin: 0; height: 874px; width: 402px; display: flex; flex-direction: column; background: #ffdc00; font-family: 'Paperlogy', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow: hidden;}
+.logo{position: absolute; top: calc(50vh - 250px); left: 50%; transform: translate(-50%,-600px); animation: dropBounce 1.1s cubic-bezier(.28, .8, .5, 1) forwards; animation-delay: 0.3s; z-index: 10;}
+@keyframes dropBounce{
+  0%{transform: translate(-50%, -600px);}
+  45%{transform: translate(-50%, 0);}
+  70%{transform: translate(-50%, -20px);}
+  75%{transform: translate(-50%, -4px);}
+  100%{transform: translate(-50%, 0);}
+}
+
+.type-zone{position: absolute; top: calc( 50vh + 60px); left: 0; width: 100%; display: flex; justify-content: center;}
+.typing-text{font-size: 24px; font-weight: 700; letter-spacing: 2px; text-align: center; line-height: 1.4;}
+.up{color: #B39A00;}
+.down{color: #00995E;}
+.cursor.up{background: #B39A00;}
+.cursor.down{background: #00995E;}
+@keyframes blink{
+  0%, 50%{opacity: 1;}
+  50.01%, 100%{opacity: 0;}
+}
+
+#fadeOut{position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffdc00; opacity: 0; pointer-events: none; z-index: 999;}
+#fadeOut.show{opacity: 1; pointer-events: auto; transition: opacity 1.5s ease;}
+    </style>
+</head>
+<body>
+  <div class="splash">
+
+    <img class="logo" src="images/duckduckrich_logo/DuckDuckRich_logoshape_outlined.png" style="width: 250px;"/>
+
+  <div class="type-zone">
+    <div class="typing-text" id="typeArea">
+    </div>
+  </div>
+
+  <div id="fadeOut"></div>
+
+  </div>
+  
+</div>
+
+
+<script src="js/jquery-4.0.0.min.js"></script>
+<script>
+const upText = "일상 곳곳 보험 모아 태산";
+const downText = "덕덕리치";
+const area = document.getElementById('typeArea');
+let i = 0;
+
+//초기상태: up span + cursor up
+area.innerHTML = '<span class="up" id="upSpan"></span><span class="cursor up" id="cursor">&nbsp;</span>' ;
+
+//1단계: up span typing
+function typeUp(){
+  if(i < upText.length){
+    document.getElementById('upSpan').textContent += upText[i];
+    i++;
+    setTimeout(typeUp, 90 + Math.random() * 80);
+  } else {
+    //up span typing 완료 후 줄바꿈, 다음 단계 시작
+    i = 0;
+    area.innerHTML = '<span class="up">일상 곳곳 보험 모아 태산</span><br><span class="down" id="downSpan"></span><span class="cursor down" id="cursor">&nbsp;</span>';
+    setTimeout(typeDown, 300)
+  }
+}
+
+//2단계: down span typing
+function typeDown(){
+  if(i < downText.length){
+    document.getElementById('downSpan').textContent += downText[i];
+    i++;
+    setTimeout(typeDown, 250 + Math.random() * 150);
+  } else {
+    //모든 타이핑 완료 후 페이지 이동
+    document.getElementById('cursor').style.display = 'none';
+    setTimeout(function(){
+      document.getElementById('fadeOut').classList.add('show');
+      setTimeout(function(){
+        document.getElementById('fadeOut').classList.add('show');
+        setTimeout(function(){
+          window.location.href = 'index-2.html';
+        }, 1500)
+      }, 500)
+    })
+  }
+}
+//로고 이동 후 타이핑 시작
+setTimeout(typeUp, 1500);
+</script>
+
+</body>
+</html>
